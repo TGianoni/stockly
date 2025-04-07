@@ -1,12 +1,12 @@
 import { DataTable } from "../_components/ui/data-table";
 import { productTableColumns } from "./_components/table-columns";
-import { getProducts } from "../_data-access/product/get-products";
+import { cachedGetProducts } from "../_data-access/product/get-products";
 import AddProductButton from "./_components/create-product-button";
 
 export const dynamic = "force-dynamic"; // This page will always be revalidated on every request
 
 const ProductsPage = async () => {
-  const products = await getProducts();
+  const products = await cachedGetProducts();
 
   return (
     <div className="m-8 my-8 w-full space-y-8 rounded-lg bg-white p-8 px-8">
