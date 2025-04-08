@@ -4,7 +4,7 @@ import { Button } from "@/app/_components/ui/button";
 import { Dialog, DialogTrigger } from "../../_components/ui/dialog";
 import { PlusIcon } from "lucide-react";
 
-import UpsertProductDialogContent from "./upsert-product-content";
+import UpsertProductDialogContent from "./upsert-dialog-content";
 import { useState } from "react";
 
 const CreateProductButton = () => {
