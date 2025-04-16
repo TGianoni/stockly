@@ -27,7 +27,10 @@ const SalesPage = async () => {
           <SheetTrigger asChild>
             <Button>Nova venda</Button>
           </SheetTrigger>
-          <UpsertSheetContent productOptions={productOptions} />
+          <UpsertSheetContent
+            products={products}
+            productOptions={productOptions}
+          />
         </Sheet>
       </div>
       {/* <DataTable columns={productTableColumns} data={products} /> */}
