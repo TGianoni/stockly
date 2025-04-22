@@ -1,7 +1,7 @@
 import "server-only";
 import { db } from "@/app/_lib/prisma";
 import { Product } from "@prisma/client";
-// import { unstable_cache } from "next/cache";
+import { unstable_cache } from "next/cache";
 
 export interface ProductDto extends Product {
   status: "IN_STOCK" | "OUT_OF_STOCK";
@@ -15,7 +15,7 @@ export const getProducts = async (): Promise<ProductDto[]> => {
   }));
 };
 
-// export const cachedGetProducts = unstable_cache(getProducts, ["getProducts"], {
-//   tags: ["get-products"],
-//   revalidate: 60,
-// });
+export const cachedGetProducts = unstable_cache(getProducts, ["getProducts"], {
+  tags: ["get-products"],
+  revalidate: 60,
+});
