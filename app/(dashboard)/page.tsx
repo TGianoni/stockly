@@ -21,18 +21,27 @@ import { getTotalProducts } from "../_data-access/dashboard/get-total-products";
 import { getTodayRevenue } from "../_data-access/dashboard/get-today-revenue";
 import { getTotalRevenue } from "../_data-access/dashboard/get-total-revenue";
 import { formatCurrency } from "../_helpers/currency";
+import ReveneuChart from "./_components/reveneu-chart";
+import { getLast14DaysRevenue } from "../_data-access/dashboard/get-last-14-days-reveneu";
 
 const Home = async () => {
-  const [totalInStock, totalSales, totalProducts, todayReveneu, totalReveneu] =
-    await Promise.all([
-      getTotalInStock(),
-      getTotalSales(),
-      getTotalProducts(),
-      getTodayRevenue(),
-      getTotalRevenue(),
-    ]);
+  const [
+    totalInStock,
+    totalSales,
+    totalProducts,
+    todayReveneu,
+    totalReveneu,
+    totalLast14DaysReveneu,
+  ] = await Promise.all([
+    getTotalInStock(),
+    getTotalSales(),
+    getTotalProducts(),
+    getTodayRevenue(),
+    getTotalRevenue(),
+    getLast14DaysRevenue(),
+  ]);
   return (
-    <div className="m-8 w-full space-y-8 rounded-lg">
+    <div className="m-8 flex w-full flex-col space-y-8 rounded-lg">
       <Header>
         <HeaderLeft>
           <HeaderTitle>Dashboard</HeaderTitle>
@@ -79,6 +88,15 @@ const Home = async () => {
           <SummaryCardTitle>Produtos</SummaryCardTitle>
           <SummaryCardValue>{totalProducts}</SummaryCardValue>
         </SummaryCard>
+      </div>
+
+      <div className="flex h-full flex-col overflow-hidden rounded-xl bg-white p-6">
+        <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-md bg-emerald-500 bg-opacity-10">
+          <DollarSign className="text-emerald-500" />
+        </div>
+        <p className="text-lg font-semibold text-slate-900">Receita</p>
+        <p className="text-sm text-slate-400">Últimos 14 dias</p>
+        <ReveneuChart data={totalLast14DaysReveneu} />
       </div>
     </div>
   );
