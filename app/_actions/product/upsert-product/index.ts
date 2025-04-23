@@ -24,4 +24,5 @@ export const upsertProduct = actionClient
     });
     // Revalidate the path to refresh the data
     revalidatePath("/products");
+    revalidatePath("/dashboard");
   });
