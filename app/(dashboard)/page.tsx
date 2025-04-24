@@ -23,6 +23,8 @@ import { getTotalRevenue } from "../_data-access/dashboard/get-total-revenue";
 import { formatCurrency } from "../_helpers/currency";
 import ReveneuChart from "./_components/reveneu-chart";
 import { getLast14DaysRevenue } from "../_data-access/dashboard/get-last-14-days-reveneu";
+import { getMostSoldProducts } from "../_data-access/dashboard/get-most-sold-products";
+import MostSoldProductItem from "./_components/most-sold-product-item";
 
 const Home = async () => {
   const [
@@ -32,6 +34,7 @@ const Home = async () => {
     todayReveneu,
     totalReveneu,
     totalLast14DaysReveneu,
+    mostSoldProducts,
   ] = await Promise.all([
     getTotalInStock(),
     getTotalSales(),
@@ -39,6 +42,7 @@ const Home = async () => {
     getTodayRevenue(),
     getTotalRevenue(),
     getLast14DaysRevenue(),
+    getMostSoldProducts(),
   ]);
   return (
     <div className="m-8 flex w-full flex-col space-y-8 rounded-lg">
@@ -90,13 +94,22 @@ const Home = async () => {
         </SummaryCard>
       </div>
 
-      <div className="flex h-full flex-col overflow-hidden rounded-xl bg-white p-6">
-        <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-md bg-emerald-500 bg-opacity-10">
-          <DollarSign className="text-emerald-500" />
+      <div className="grid min-h-0 grid-cols-[minmax(0,2.5fr),minmax(0,1fr)] gap-6">
+        <div className="flex h-full flex-col overflow-hidden rounded-xl bg-white p-6">
+          <p className="text-lg font-semibold text-slate-900">Receita</p>
+          <p className="text-sm text-slate-400">Últimos 14 dias</p>
+          <ReveneuChart data={totalLast14DaysReveneu} />
         </div>
-        <p className="text-lg font-semibold text-slate-900">Receita</p>
-        <p className="text-sm text-slate-400">Últimos 14 dias</p>
-        <ReveneuChart data={totalLast14DaysReveneu} />
+        <div className="flex h-full flex-col overflow-hidden rounded-xl bg-white">
+          <p className="p-6 text-lg font-semibold text-slate-900">
+            Produtos mais vendidos
+          </p>
+          <div className="space-y-7 overflow-y-auto px-6 pb-6">
+            {mostSoldProducts.map((product) => (
+              <MostSoldProductItem key={product.productId} product={product} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
