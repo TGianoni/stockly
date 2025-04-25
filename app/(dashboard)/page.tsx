@@ -1,46 +1,22 @@
-import {
-  CircleDollarSign,
-  DollarSign,
-  PackageIcon,
-  ShoppingBasketIcon,
-} from "lucide-react";
 import Header, {
   HeaderLeft,
   HeaderSubtitle,
   HeaderTitle,
 } from "../_components/header";
-import {
-  SummaryCard,
-  SummaryCardIcon,
-  SummaryCardTitle,
-  SummaryCardValue,
-} from "./_components/summary-card";
-import { getTotalInStock } from "../_data-access/dashboard/get-total-in-stock";
-import { getTotalSales } from "../_data-access/dashboard/get-total-sales";
-import { getTotalProducts } from "../_data-access/dashboard/get-total-products";
-import { getTodayRevenue } from "../_data-access/dashboard/get-today-revenue";
-import { getTotalRevenue } from "../_data-access/dashboard/get-total-revenue";
-import { formatCurrency } from "../_helpers/currency";
 import ReveneuChart from "./_components/reveneu-chart";
 import { getLast14DaysRevenue } from "../_data-access/dashboard/get-last-14-days-reveneu";
 import { getMostSoldProducts } from "../_data-access/dashboard/get-most-sold-products";
 import MostSoldProductItem from "./_components/most-sold-product-item";
+import TotalReveneuCard from "./_components/total-reveneu-card";
+import { Suspense } from "react";
+import { Skeleton } from "../_components/ui/skeleton";
+import TodayReveneuCard from "./_components/today-reveneu-card";
+import TotalSalesCard from "./_components/total-sales-card";
+import TotalInStockCard from "./_components/total-in-stock-card";
+import TotalProductsCard from "./_components/total-products-card";
 
 const Home = async () => {
-  const [
-    totalInStock,
-    totalSales,
-    totalProducts,
-    todayReveneu,
-    totalReveneu,
-    totalLast14DaysReveneu,
-    mostSoldProducts,
-  ] = await Promise.all([
-    getTotalInStock(),
-    getTotalSales(),
-    getTotalProducts(),
-    getTodayRevenue(),
-    getTotalRevenue(),
+  const [totalLast14DaysReveneu, mostSoldProducts] = await Promise.all([
     getLast14DaysRevenue(),
     getMostSoldProducts(),
   ]);
@@ -54,44 +30,36 @@ const Home = async () => {
       </Header>
 
       <div className="grid grid-cols-2 gap-6">
-        <SummaryCard>
-          <SummaryCardIcon>
-            <DollarSign />
-          </SummaryCardIcon>
-          <SummaryCardTitle>Receita Total</SummaryCardTitle>
-          <SummaryCardValue>{formatCurrency(totalReveneu)}</SummaryCardValue>
-        </SummaryCard>
+        <Suspense
+          fallback={<Skeleton className="rounded-xl bg-white bg-opacity-75" />}
+        >
+          <TotalReveneuCard />
+        </Suspense>
 
-        <SummaryCard>
-          <SummaryCardIcon>
-            <DollarSign />
-          </SummaryCardIcon>
-          <SummaryCardTitle>Receita Hoje</SummaryCardTitle>
-          <SummaryCardValue>{formatCurrency(todayReveneu)}</SummaryCardValue>
-        </SummaryCard>
+        <Suspense
+          fallback={<Skeleton className="rounded-xl bg-white bg-opacity-75" />}
+        >
+          <TodayReveneuCard />
+        </Suspense>
       </div>
       <div className="grid grid-cols-3 gap-6">
-        <SummaryCard>
-          <SummaryCardIcon>
-            <CircleDollarSign />
-          </SummaryCardIcon>
-          <SummaryCardTitle>Vendas Totais</SummaryCardTitle>
-          <SummaryCardValue>{totalSales}</SummaryCardValue>
-        </SummaryCard>
-        <SummaryCard>
-          <SummaryCardIcon>
-            <PackageIcon />
-          </SummaryCardIcon>
-          <SummaryCardTitle>Total em Estoque</SummaryCardTitle>
-          <SummaryCardValue>{totalInStock}</SummaryCardValue>
-        </SummaryCard>
-        <SummaryCard>
-          <SummaryCardIcon>
-            <ShoppingBasketIcon />
-          </SummaryCardIcon>
-          <SummaryCardTitle>Produtos</SummaryCardTitle>
-          <SummaryCardValue>{totalProducts}</SummaryCardValue>
-        </SummaryCard>
+        <Suspense
+          fallback={<Skeleton className="rounded-xl bg-white bg-opacity-75" />}
+        >
+          <TotalSalesCard />
+        </Suspense>
+
+        <Suspense
+          fallback={<Skeleton className="rounded-xl bg-white bg-opacity-75" />}
+        >
+          <TotalInStockCard />
+        </Suspense>
+
+        <Suspense
+          fallback={<Skeleton className="rounded-xl bg-white bg-opacity-75" />}
+        >
+          <TotalProductsCard />
+        </Suspense>
       </div>
 
       <div className="grid min-h-0 grid-cols-[minmax(0,2.5fr),minmax(0,1fr)] gap-6">
