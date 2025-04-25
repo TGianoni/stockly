@@ -3,8 +3,6 @@ import Header, {
   HeaderSubtitle,
   HeaderTitle,
 } from "../_components/header";
-import ReveneuChart from "./_components/reveneu-chart";
-import { getLast14DaysRevenue } from "../_data-access/dashboard/get-last-14-days-reveneu";
 import { getMostSoldProducts } from "../_data-access/dashboard/get-most-sold-products";
 import MostSoldProductItem from "./_components/most-sold-product-item";
 import TotalReveneuCard from "./_components/total-reveneu-card";
@@ -14,12 +12,10 @@ import TodayReveneuCard from "./_components/today-reveneu-card";
 import TotalSalesCard from "./_components/total-sales-card";
 import TotalInStockCard from "./_components/total-in-stock-card";
 import TotalProductsCard from "./_components/total-products-card";
+import TotalLast14DaysReveneuCard from "./_components/total-last-14days-reveneu-card";
 
 const Home = async () => {
-  const [totalLast14DaysReveneu, mostSoldProducts] = await Promise.all([
-    getLast14DaysRevenue(),
-    getMostSoldProducts(),
-  ]);
+  const [mostSoldProducts] = await Promise.all([getMostSoldProducts()]);
   return (
     <div className="m-8 flex w-full flex-col space-y-8 rounded-lg">
       <Header>
@@ -63,11 +59,11 @@ const Home = async () => {
       </div>
 
       <div className="grid min-h-0 grid-cols-[minmax(0,2.5fr),minmax(0,1fr)] gap-6">
-        <div className="flex h-full flex-col overflow-hidden rounded-xl bg-white p-6">
-          <p className="text-lg font-semibold text-slate-900">Receita</p>
-          <p className="text-sm text-slate-400">Últimos 14 dias</p>
-          <ReveneuChart data={totalLast14DaysReveneu} />
-        </div>
+        <Suspense
+          fallback={<Skeleton className="rounded-xl bg-white bg-opacity-75" />}
+        >
+          <TotalLast14DaysReveneuCard />
+        </Suspense>
         <div className="flex h-full flex-col overflow-hidden rounded-xl bg-white">
           <p className="p-6 text-lg font-semibold text-slate-900">
             Produtos mais vendidos
