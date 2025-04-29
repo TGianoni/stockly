@@ -21,10 +21,10 @@ import {
 import { useState } from "react";
 import UpsertProductDialogContent from "./upsert-dialog-content";
 import DeleteProductDialogContent from "./delete-dialog-content";
-import { Product } from "@prisma/client";
+import { ProductDto } from "@/app/_data-access/product/get-products";
 
 interface ProductTableDropdownMenuProps {
-  product: Product; // Replace with the actual type of your row data
+  product: ProductDto; // Replace with the actual type of your row data
 }
 
 const ProductTableDropdownMenu = ({
